@@ -174,6 +174,8 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
+
+
     function reset() {
         // noop
     }
@@ -190,7 +192,8 @@ var Engine = (function(global) {
         'images/char-boy.png',
         'images/char-cat-girl.png',
         'images/char-horn-girl.png',
-        'images/char-pink-girl.png'
+        'images/char-pink-girl.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 

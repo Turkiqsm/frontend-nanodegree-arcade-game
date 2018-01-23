@@ -1,5 +1,12 @@
 //Collision variable to check it
 var Collisioned = false;
+var heartscore=0;
+var heartpy = [180,360,270];
+var heartpx = [180,360,270];
+var hearrand ='images/Heart.png';
+var heartx=0;
+var hearty=0;
+
 
 
 
@@ -10,6 +17,17 @@ var random = function(x) {
 };
 
 // Enemies our player must avoid
+var sound=function(){
+
+var myAudio = new Audio('bgsound.wav');
+myAudio.loop = true;
+myAudio.play();
+
+}
+sound();
+
+
+
 
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -58,8 +76,14 @@ Enemy.prototype.render = function() {
 
 Enemy.prototype.checkCollisions = function() {
     if (Collisioned === true) {
+
+
         player.reset();
         Collisioned = false;
+if(heartscore!=0){
+        heartscore--;
+      }
+        console.log(heartscore);
     }
 
 };
@@ -79,7 +103,18 @@ Player.prototype.update = function() {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+if (((this.x > heartx - 50) && (this.x < heartx + 50)) && ((this.y > hearty - 50) && (this.y < hearty + 50))){
+  console.log(heartscore);
 
+      if(this.score%5==0)
+        heartscore++;
+        heartx=-2;
+        hearty=-2
+        this.score++;
+
+        this.reset();
+
+    }
 
 
 
@@ -87,8 +122,11 @@ Player.prototype.update = function() {
 
 
 Player.prototype.render = function() {
+      if(this.score%5==0 && this.score != 0){
 
     if (this.score >= 5) {
+
+      ctx.drawImage(Resources.get('images/Heart.png'), heartx, hearty);
 
         this.sprite = 'images/char-cat-girl.png';
     }
@@ -100,32 +138,73 @@ Player.prototype.render = function() {
         this.sprite = 'images/char-pink-girl.png';
 
     }
+  }
+
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
+var hearts =function(){
+var str;
+if (heartscore>0){
+  str="&#9829;";
+  for(var i = 1;i<heartscore;i++){
+    str = str+"&#9829;";
+  }
+}
+return str;
+}
 //adding or altering the score on the screen
 Player.prototype.ScoreHTML = function() {
 
     $(".Score").html("<p>Score : <b>" + player.score + "</b></p>");
+    if(heartscore!=0){
+        $(".heart").html(hearts());
+}
+
 };
 //resets the player and the score
 Player.prototype.reset = function() {
+if(Collisioned == true){
+    var myAudio = new Audio('death.wav');
+    myAudio.play();
 
     this.x = 200;
     this.y = 400;
-
+if (heartscore==0){
     this.score = 0;
-    this.ScoreHTML();
+    this.sprite = 'images/char-boy.png'
 
 
+}
+
+}
+this.ScoreHTML();
 };
+
+
 Player.prototype.handleInput = function(key) {
     if (this.y < 100) {
-        this.y = 400;
-        this.score++;
+          this.y = 400;
+          this.score++;
+
+        if (this.score % 5 == 0 && this.score != 0) {
+          heartx= heartpx[random(3)];
+          hearty= heartpy[random(3)];
+          var audio = new Audio('levelup.mp3');
+          audio.play();
+
+
+                                                  }
+
+
+
         this.ScoreHTML();
     }
+
+
+
+
+
     if (key == 'left' && !(this.x - 90 < 0)) {
 
         this.x -= 90;
