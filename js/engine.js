@@ -79,9 +79,11 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        allEnemies.forEach(function(enemy) {
-            enemy.checkCollisions();
+        allEnemies.forEach(function(enem) {
+            enem.checkCollisions();
         });
+
+
 
 
     }

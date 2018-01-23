@@ -1,19 +1,13 @@
 //Collision variable to check it
 var Collisioned = false;
 
-//resets the player and the score
 
 
 
-//adding or altering the score on the screen
-var ScoreHTML = function() {
-
-    $(".Score").html("<p>Score : <b>" + player.score + "</b></p>");
-}
 // generate random number not bigger then x
 var random = function(x) {
     return Math.floor((Math.random() * 10) % x);
-}
+};
 
 // Enemies our player must avoid
 
@@ -63,7 +57,7 @@ Enemy.prototype.render = function() {
 };
 
 Enemy.prototype.checkCollisions = function() {
-    if (Collisioned == true) {
+    if (Collisioned === true) {
         player.reset();
         Collisioned = false;
     }
@@ -72,7 +66,7 @@ Enemy.prototype.checkCollisions = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var player = function() {
+var Player = function() {
     this.x = 200;
     this.y = 400;
     this.score = 0;
@@ -81,7 +75,7 @@ var player = function() {
 
 };
 
-player.prototype.update = function() {
+Player.prototype.update = function() {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -92,7 +86,7 @@ player.prototype.update = function() {
 };
 
 
-player.prototype.render = function() {
+Player.prototype.render = function() {
 
     if (this.score >= 5) {
 
@@ -109,21 +103,28 @@ player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-player.prototype.reset = function() {
 
-    player.x = 200;
-    player.y = 400;
+//adding or altering the score on the screen
+Player.prototype.ScoreHTML = function() {
 
-    player.score = 0;
-    ScoreHTML();
+    $(".Score").html("<p>Score : <b>" + player.score + "</b></p>");
+};
+//resets the player and the score
+Player.prototype.reset = function() {
+
+    this.x = 200;
+    this.y = 400;
+
+    this.score = 0;
+    this.ScoreHTML();
 
 
 };
-player.prototype.handleInput = function(key) {
+Player.prototype.handleInput = function(key) {
     if (this.y < 100) {
         this.y = 400;
         this.score++;
-        ScoreHTML();
+        this.ScoreHTML();
     }
     if (key == 'left' && !(this.x - 90 < 0)) {
 
@@ -146,7 +147,7 @@ for (var i = 5; i > 0; i--) {
 }
 
 
-var player = new player();
+var player = new Player();
 
 
 
